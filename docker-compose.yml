@@ -1,0 +1,15 @@
+version: "3.9"
+
+
+services:
+  dbpostgres:
+    image: postgres
+    environment: 
+      - POSTGRES_DB=dbadmin
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=YWRtaW5pc3RyYXRvcgo= 
+
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
