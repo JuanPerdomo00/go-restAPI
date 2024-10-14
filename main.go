@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/JuanPerdomo00/go-restAPI/db"
+	"github.com/JuanPerdomo00/go-restAPI/models"
 	"github.com/JuanPerdomo00/go-restAPI/routes"
 	"github.com/gorilla/mux"
 )
@@ -12,6 +13,8 @@ import (
 func main() {
 	const PORT = "8080"
 	db.DBconnection()
+	db.DB.AutoMigrate(models.Task{})
+	db.DB.AutoMigrate(models.User{})
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", routes.HomeHandler)
