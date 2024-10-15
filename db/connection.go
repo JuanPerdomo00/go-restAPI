@@ -18,6 +18,6 @@ func DBconnection() {
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		log.Println("DB is runig")
+		log.Println("DB is runing")
 	}
 }
