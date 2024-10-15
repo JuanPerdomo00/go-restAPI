@@ -3,5 +3,5 @@ package routes
 import "net/http"
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World desde go"))
+	w.Write([]byte("Nice to meet you"))
 }
