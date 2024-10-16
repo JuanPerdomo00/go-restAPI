@@ -1,9 +1,18 @@
 package routes
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+
+	"github.com/JuanPerdomo00/go-restAPI/db"
+	"github.com/JuanPerdomo00/go-restAPI/models"
+)
 
 func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("get users"))
+	var users []models.User
+
+	db.DB.Find(&users)
+	json.NewEncoder(w).Encode(&users)
 }
 
 func GetUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -11,7 +20,16 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostUserHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Post User"))
+	var user models.User
+	json.NewDecoder(r.Body).Decode(&user)
+	createUser := db.DB.Create(&user)
+	err := createUser.Error
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest) // 400
+		w.Write([]byte(err.Error()))
+	}
+
+	json.NewEncoder(w).Encode(&user)
 }
 
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
