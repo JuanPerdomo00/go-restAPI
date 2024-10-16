@@ -20,9 +20,9 @@ func main() {
 	r.HandleFunc("/", routes.HomeHandler)
 
 	r.HandleFunc("/users", routes.GetUsersHandler).Methods("GET")
-	r.HandleFunc("/users", routes.DeleteUserHandler).Methods("GET")
-	r.HandleFunc("/users", routes.PostUserHandler).Methods("POST")
-	r.HandleFunc("/users", routes.DeleteUserHandler).Methods("DELETE")
+	r.HandleFunc("/user/{id}", routes.GetUserHandler).Methods("GET")
+	r.HandleFunc("/user/{id}", routes.PostUserHandler).Methods("POST")
+	r.HandleFunc("/user/{id}", routes.DeleteUserHandler).Methods("DELETE")
 
 	log.Printf("Server on http://127.0.0.1:%s\n", PORT)
 	http.ListenAndServe(":8080", r)
