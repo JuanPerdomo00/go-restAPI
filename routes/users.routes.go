@@ -6,6 +6,7 @@ import (
 
 	"github.com/JuanPerdomo00/go-restAPI/db"
 	"github.com/JuanPerdomo00/go-restAPI/models"
+	"github.com/gorilla/mux"
 )
 
 func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +17,18 @@ func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUserHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("get user"))
+	var users models.User
+	params := mux.Vars(r)
+
+	db.DB.Find(&users, params["id"])
+
+	if users.ID == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("User Not Found"))
+		return
+	}
+
+	json.NewEncoder(w).Encode(&users)
 }
 
 func PostUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -33,5 +45,17 @@ func PostUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("delete"))
+	params := mux.Vars(r)
+	var user models.User
+	db.DB.First(&user, params["id"])
+
+	if user.ID == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("User not found"))
+		return
+	}
+
+	json.NewEncoder(w).Encode(&user)
+	db.DB.Unscoped().Delete(&user)
+	w.WriteHeader(http.StatusOK)
 }
